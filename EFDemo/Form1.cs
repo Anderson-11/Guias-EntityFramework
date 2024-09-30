@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -87,6 +88,17 @@ namespace EFDemo
             MessageBox.Show("Actualizacion Exitosa");
             txbCustomerID.Enabled = true;
             Limpiar();
+        }
+
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Quieres eliminar este cliente", "Eliminar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                var eliminar = cr.DeleteCliente(txbCustomerID.Text);
+                MessageBox.Show($"Cliente Eliminado");
+                Limpiar();
+                txbCustomerID.Enabled = true;
+            }
         }
     }
 }
