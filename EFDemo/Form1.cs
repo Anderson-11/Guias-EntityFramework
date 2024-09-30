@@ -40,6 +40,15 @@ namespace EFDemo
             txbAddress.Text = "";
         }
 
+        private void llenarCampos(Customers customers)
+        {
+            txbCustomerID.Text = customers.CustomerID;
+            txbCompanyName.Text = customers.CompanyName;
+            txbContactName.Text = customers.ContactName;
+            txbContactTitle.Text = customers.ContactTitle;
+            txbAddress.Text = customers.Address;
+        }
+
         private CustomerRepository cr = new CustomerRepository();
         private void btnObtenerTodos_Click(object sender, EventArgs e)
         {
@@ -51,8 +60,13 @@ namespace EFDemo
         {
             var cliente = cr.ObtenerPorID(txtObtenerID.Text);
             List<Customers> lista1 = new List<Customers> { cliente };
-            dgvCustomers.DataSource = lista1;
             txtObtenerID.Text = "";
+            if(cliente != null)
+            {
+                llenarCampos(cliente);
+                txbCustomerID.Enabled = false;
+            }
+            dgvCustomers.DataSource = lista1;
         }
 
         private void btnInsertar_Click(object sender, EventArgs e)
@@ -60,6 +74,18 @@ namespace EFDemo
             var cliente = crearCliente();
             var resultado = cr.InsertarCliente(cliente);
             MessageBox.Show($"Se Ingreso {resultado}");
+            Limpiar();
+        }
+
+        private void btnActualizar_Click(object sender, EventArgs e)
+        {
+            var cliente = crearCliente();
+            cr.UpdateCliente(cliente);
+            var resultado = cr.ObtenerPorID(cliente.CustomerID);
+            List<Customers> lista1 = new List<Customers> { resultado };
+            dgvCustomers.DataSource = lista1;
+            MessageBox.Show("Actualizacion Exitosa");
+            txbCustomerID.Enabled = true;
             Limpiar();
         }
     }

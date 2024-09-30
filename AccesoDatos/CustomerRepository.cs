@@ -28,5 +28,19 @@ namespace AccesoDatos
             contexto.Customers.Add(customers);
             return contexto.SaveChanges();
         }
+
+        public int UpdateCliente(Customers customers)
+        {
+            var registro = ObtenerPorID(customers.CustomerID);
+            if (registro != null)
+            {
+                registro.CustomerID = customers.CustomerID;
+                registro.ContactTitle = customers.ContactTitle;
+                registro.Address = customers.Address;
+                registro.ContactName = customers.ContactName;
+                registro.CompanyName = customers.CompanyName;
+            }
+            return contexto.SaveChanges();
+        }
     }
 }
